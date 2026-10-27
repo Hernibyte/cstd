@@ -26,7 +26,7 @@ namespace cstd
         owner& operator=(owner&&) = delete;
         
         const T& get() const { return *m_ptr; }
-        const T* operator->() const { return m_ptr; }
+        T* operator->() const { return m_ptr; }
 
     private:
         template <class>

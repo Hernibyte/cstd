@@ -75,10 +75,10 @@ namespace cstd
         
         const T& get() const
         {
-            assert(m_ptr != nullptr);
+            assert(m_ptr);
             return *m_ptr;
         }
-        const T* operator->() const
+        T* operator->() const
         {
             assert(m_ptr);
             return m_ptr;
