@@ -1,0 +1,11 @@
+add_executable(owner_example)
+
+target_sources(owner_example
+    PRIVATE
+        main.cpp
+)
+
+target_link_libraries(owner_example
+    PRIVATE
+        cstd::cstd
+)

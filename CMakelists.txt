@@ -1,0 +1,40 @@
+cmake_minimum_required(VERSION 3.5...4.0)
+project(cstd VERSION 0.0.1 LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
+
+option(CSTD_BUILD_EXAMPLES "Build cstd example programs" ${PROJECT_IS_TOP_LEVEL})
+
+# ========================
+# Examples
+# ========================
+if (CSTD_BUILD_EXAMPLES)
+    add_subdirectory(examples)
+endif()
+
+# ========================
+# Librería principal: cstd
+# ========================
+add_library(cstd STATIC)
+add_library(cstd::cstd ALIAS cstd)
+
+target_compile_features(cstd PUBLIC cxx_std_23)
+
+target_sources(cstd
+    PUBLIC
+        FILE_SET HEADERS
+        BASE_DIRS ./include
+        FILES
+            include/ref.h
+            include/owner.h
+            include/unique_ptr.h
+    PRIVATE
+        src/ref.cpp
+        src/owner.cpp
+        src/unique_ptr.cpp
+)
