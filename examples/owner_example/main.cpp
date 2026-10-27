@@ -1,6 +1,8 @@
 #include <owner.h>
 #include <unique_ptr.h>
 #include <ref.h>
+#include <array.h>
+#include <array>
 #include <iostream>
 
 class Example
@@ -65,6 +67,10 @@ int main()
         std::cout << "ref_example count: " << ref_example.count() << "\n";
         std::cout << "ref_example1 count: " << ref_example1.count() << "\n";
     }
+    
+    std::cout << "=== array example\n";
+    cstd::array<Example, 2> arr{Example{1}, Example{2}};
+    arr[0].print_var();
     
     return 0;
 }

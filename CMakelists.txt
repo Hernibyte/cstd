@@ -33,8 +33,7 @@ target_sources(cstd
             include/ref.h
             include/owner.h
             include/unique_ptr.h
+            include/array.h
     PRIVATE
         src/ref.cpp
-        src/owner.cpp
-        src/unique_ptr.cpp
 )
