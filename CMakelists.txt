@@ -20,10 +20,10 @@ endif()
 # ========================
 # Librería principal: cstd
 # ========================
-add_library(cstd STATIC)
+add_library(cstd INTERFACE)
 add_library(cstd::cstd ALIAS cstd)
 
-target_compile_features(cstd PUBLIC cxx_std_23)
+target_compile_features(cstd INTERFACE cxx_std_23)
 
 target_sources(cstd
     PUBLIC
@@ -36,6 +36,4 @@ target_sources(cstd
             include/cstd/unique_ref.h
             include/cstd/array.h
             include/cstd/array_list.h
-    PRIVATE
-        src/ref.cpp
 )
