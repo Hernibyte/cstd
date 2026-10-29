@@ -6,24 +6,24 @@ namespace cstd
     
     // This type work as absolute owner of a ptr. Cannot be transfer, copy o dereferenced manually, He creates and delete the ptr automatically.
     template <typename T>
-    class owner
+    class owner_ref
     {
     public:
         template <typename... Args>
-        explicit owner(Args&&... args)
+        explicit owner_ref(Args&&... args)
         {
             m_ptr = new T(forward<Args>(args)...);
         }
 
-        ~owner()
+        ~owner_ref()
         {
             delete m_ptr;
         }
 
-        owner(const owner&) = delete;
-        owner(owner&&) = default;
-        owner& operator=(const owner&) = delete;
-        owner& operator=(owner&&) = delete;
+        owner_ref(const owner_ref&) = delete;
+        owner_ref(owner_ref&&) = default;
+        owner_ref& operator=(const owner_ref&) = delete;
+        owner_ref& operator=(owner_ref&&) = delete;
         
         const T& get() const { return *m_ptr; }
         T* operator->() const { return m_ptr; }

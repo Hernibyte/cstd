@@ -31,32 +31,32 @@ namespace cstd
     
     // This type will be a pseudo-twin to a standard unique_ptr
     template <typename T>
-    class unique_ptr
+    class unique_ref
     {
     public:
-        unique_ptr() = delete;
+        unique_ref() = delete;
         
         template <typename... Args>
-        unique_ptr(Args&&... args)
+        unique_ref(Args&&... args)
         {
             m_ptr = new T(forward<Args>(args)...);
         }
 
-        ~unique_ptr()
+        ~unique_ref()
         {
             if (m_ptr) delete m_ptr;
         }
 
-        unique_ptr(unique_ptr&) = delete;
-        unique_ptr& operator=(const unique_ptr&) = delete;
-        unique_ptr& operator=(unique_ptr&) = delete;
+        unique_ref(unique_ref&) = delete;
+        unique_ref& operator=(const unique_ref&) = delete;
+        unique_ref& operator=(unique_ref&) = delete;
         
-        unique_ptr(unique_ptr&& other) noexcept : m_ptr(other.m_ptr)
+        unique_ref(unique_ref&& other) noexcept : m_ptr(other.m_ptr)
         {
             other.m_ptr = nullptr;
         }
         
-        unique_ptr& operator=(unique_ptr&& other) noexcept
+        unique_ref& operator=(unique_ref&& other) noexcept
         {
             if (other.m_ptr)
             {

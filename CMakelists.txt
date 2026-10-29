@@ -31,8 +31,8 @@ target_sources(cstd
         BASE_DIRS ./include
         FILES
             include/ref.h
-            include/owner.h
-            include/unique_ptr.h
+            include/owner_ref.h
+            include/unique_ref.h
             include/array.h
     PRIVATE
         src/ref.cpp
