@@ -28,6 +28,14 @@ namespace cstd
         return static_cast<U&&>(arg);
     }
     
+    template <class U, class Other = U>
+    U exchange(U& val, Other&& new_val) noexcept
+    {
+        U old_val = static_cast<U&&>(val);
+        val         = static_cast<Other&&>(new_val);
+        return old_val;
+    }
+    
     template <class U>
     struct remove_reference
     {

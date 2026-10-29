@@ -17,9 +17,30 @@ namespace cstd
         array() = default;
         
         template<typename... Args>
-        explicit constexpr array(Args&&... args) : m_values{forward<Args>(args)...}
+        explicit constexpr array(Args&&... args) : 
+            m_values{forward<Args>(args)...}, 
+            m_size(Size)
         {
             static_assert(sizeof...(Args) <= Size, "Argument amount should be less or equal to Size");
+        }
+        
+        // Copia
+        array(const array& other) noexcept
+        {
+            for (size_t i = 0; i < Size; ++i)
+            {
+                m_values[i] = other.m_values[i];
+            }
+        }
+        
+        // Movimiento
+        array(array&& other) noexcept :
+            m_values{}
+        {
+            for (size_t i = 0; i < Size; ++i)
+            {
+                m_values[i] = move(other.m_values[i]);
+            }
         }
         
         template <size_t OtherSize>
@@ -158,8 +179,6 @@ namespace cstd
             }
         }
         
-        
-        
         void for_each(const std::function<void(const T& element)>& func) const noexcept
         {
             for (size_t i = 0; i < Size; ++i)
@@ -181,21 +200,53 @@ namespace cstd
             return m_values[index];
         }
         
-        [[nodiscard]] T& operator[] (size_t index)
+        size_t   size()  const noexcept { return m_size; };
+        const T* begin() const noexcept { return m_values; };
+        const T* end()   const noexcept { return m_values + Size; };
+        T*       begin()      noexcept { return m_values; };
+        T*       end()        noexcept { return m_values + Size; };
+        
+        // copy
+        array& operator=(const array& other) noexcept
+        {
+            if (this != &other)
+            {
+                for (size_t i = 0; i < Size; ++i)
+                {
+                    m_values[i] = other.m_values[i];
+                }
+            }
+            return *this;
+        }
+        
+        // move
+        array& operator=(array&& other) noexcept
+        {
+            if (this != &other)
+            {
+                for (size_t i = 0; i < Size; ++i)
+                {
+                    m_values[i] = move(other.m_values[i]);
+                }
+            }
+            return *this;
+        }
+        
+        T& operator[] (size_t index)
         {
             assert(index <= Size);
             return m_values[index];
         }
         
-        const T* begin() const noexcept { return m_values; };
-        const T* end() const noexcept { return m_values + Size; };
-        T* begin() noexcept { return m_values; };
-        T* end() noexcept { return m_values + Size; };
-        
-        size_t size() const noexcept { return Size; };
+        const T& operator[] (size_t index) const
+        {
+            assert(index <= Size);
+            return m_values[index];
+        }
         
     private:
         value_type m_values[Size];
+        size_t m_size = 0;
         
     };
     

@@ -1,7 +1,7 @@
 ﻿// hzxynox
 #pragma once
 
-#include <cassert>
+#include <assert.h>
 #include <cstd/utility.h>
 
 namespace cstd

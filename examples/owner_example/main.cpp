@@ -2,6 +2,7 @@
 #include <cstd/unique_ref.h>
 #include <cstd/ref.h>
 #include <cstd/array.h>
+#include <cstd/array_list.h>
 #include <iostream>
 
 class Example
@@ -88,6 +89,9 @@ int main()
     a.reverse();
     a.for_each([](const int& e) { std::cout << e << " "; });
     std::cout << "\n";
+    
+    std::cout << "=== array list example\n";
+    cstd::array_list<int> arr_l{1, 2, 3};
     
     return 0;
 }
