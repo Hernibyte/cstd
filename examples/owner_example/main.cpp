@@ -72,5 +72,23 @@ int main()
     cstd::array<Example, 2> arr{Example{1}, Example{2}};
     arr.for_each([](const Example& e) { e.print_var(); });
     
+    cstd::array<int, 3> a;
+    a[0] = 10; a[1] = 20; a[2] = 30;
+
+    cstd::array<int, 2> b;
+    b[0] = 40; b[1] = 50;
+    
+    auto c = a.concat(b);
+    c.for_each([](const int& e) { std::cout << e << " "; });
+    std::cout << "\n";
+    
+    const auto d = a.to_reversed();
+    d.for_each([](const int& e) { std::cout << e << " "; });
+    std::cout << "\n";
+    
+    a.reverse();
+    a.for_each([](const int& e) { std::cout << e << " "; });
+    std::cout << "\n";
+    
     return 0;
 }
