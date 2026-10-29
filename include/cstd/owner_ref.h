@@ -1,6 +1,8 @@
 // hzxynox
 #pragma once
 
+#include <cstd/utility.h>
+
 namespace cstd
 {
     
@@ -29,23 +31,6 @@ namespace cstd
         T* operator->() const { return m_ptr; }
 
     private:
-        template <class>
-        constexpr static bool is_lvalue_reference = false;
-        template <class U>
-        constexpr static bool is_lvalue_reference<U&> = true;
-
-        template <class U>
-        constexpr static U&& forward(U&& arg) noexcept
-        {
-            return static_cast<U&&>(arg);
-        }
-
-        template <class U>
-        constexpr static U&& forward(U& arg) noexcept
-        {
-            static_assert(!is_lvalue_reference<U>, "bad forward call");
-            return static_cast<U&&>(arg);
-        }
 
         T* m_ptr = nullptr;
     };

@@ -2,32 +2,10 @@
 #pragma once
 
 #include <cassert>
+#include <cstd/utility.h>
 
 namespace cstd
 {
-    template <class U>
-    struct remove_reference
-    {
-        using type = U;
-    };
-    
-    template <class U>
-    struct remove_reference<U&>
-    {
-        using type = U;
-    };
-    
-    template <class U>
-    struct remove_reference<U&&>
-    {
-        using type = U;
-    };
-    
-    template <class U>
-    constexpr remove_reference<U>::type&& move(U&& arg) noexcept
-    {
-        return static_cast<remove_reference<U>::type&&>(arg);
-    }
     
     // This type will be a pseudo-twin to a standard unique_ptr
     template <typename T>
@@ -85,25 +63,8 @@ namespace cstd
         }
         
     private:
-        template <class>
-        constexpr static bool is_lvalue_reference = false;
-        template <class U>
-        constexpr static bool is_lvalue_reference<U&> = true;
-
-        template <class U>
-        constexpr static U&& forward(U&& arg) noexcept
-        {
-            return static_cast<U&&>(arg);
-        }
-
-        template <class U>
-        constexpr static U&& forward(U& arg) noexcept
-        {
-            static_assert(!is_lvalue_reference<U>, "bad forward call");
-            return static_cast<U&&>(arg);
-        }
-
         T* m_ptr = nullptr;
+        
     };
     
 }
