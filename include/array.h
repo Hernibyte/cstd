@@ -1,12 +1,18 @@
 ﻿// hzxynox
 #pragma once
 #include <assert.h>
-#include <utility>
+#include <functional>
 
 namespace cstd
 {
     
-    template <typename T, std::size_t Size>
+#ifdef _WIN64
+    typedef unsigned __int64 size_t;
+#else
+    typedef unsigned int     size_t;
+#endif
+    
+    template <typename T, size_t Size>
     class array
     {
     public:
@@ -21,16 +27,37 @@ namespace cstd
             static_assert(sizeof...(Args) <= Size, "Argument amount should be less or equal to Size");
         }
         
-        [[nodiscard]] T* at(std::size_t index) noexcept
+        void for_each(const std::function<void(const T& element)> func) const noexcept
+        {
+            for (size_t i = 0; i < Size; ++i)
+            {
+                func(m_values[i]);
+            }
+        }
+        
+        void for_each(const std::function<void(const T& element, size_t index)> func) const noexcept
+        {
+            for (size_t i = 0; i < Size; ++i)
+            {
+                func(m_values[i], i);
+            }
+        }
+        
+        [[nodiscard]] T* at(size_t index) noexcept
         {
             return m_values[index];
         }
         
-        [[nodiscard]] T& operator[] (std::size_t index)
+        [[nodiscard]] T& operator[] (size_t index)
         {
             assert(index <= Size);
             return m_values[index];
         }
+        
+        const T* begin() const noexcept { return m_values; };
+        const T* end() const noexcept { return m_values + Size; };
+        
+        size_t size() const noexcept { return Size; };
         
     private:
         value_type m_values[Size];

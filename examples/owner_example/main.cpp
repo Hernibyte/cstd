@@ -1,5 +1,5 @@
-#include <owner.h>
-#include <unique_ptr.h>
+#include <owner_ref.h>
+#include <unique_ref.h>
 #include <ref.h>
 #include <array.h>
 #include <array>
@@ -30,8 +30,8 @@ private:
 
 int main()
 {
-    const cstd::owner<int> o{5};
-    const cstd::owner<Example> example{10};
+    const cstd::owner_ref<int> o{5};
+    const cstd::owner_ref<Example> example{10};
     
     std::cout << "=== owner example\n";
     std::cout << o.get() << "\n";
@@ -39,10 +39,10 @@ int main()
     example->print_var();
     
     std::cout << "=== unique_ptr example\n";
-    cstd::unique_ptr<Example> unique_example{2};
+    cstd::unique_ref<Example> unique_example{2};
     unique_example->print_var();
     
-    const cstd::unique_ptr<Example> unique_example2 = cstd::unique_ptr<Example>::move(unique_example);
+    const cstd::unique_ref<Example> unique_example2 = cstd::unique_ref<Example>::move(unique_example);
     unique_example2->print_var();
     
     {
@@ -70,7 +70,7 @@ int main()
     
     std::cout << "=== array example\n";
     cstd::array<Example, 2> arr{Example{1}, Example{2}};
-    arr[0].print_var();
+    arr.for_each([](const Example& e) { e.print_var(); });
     
     return 0;
 }
