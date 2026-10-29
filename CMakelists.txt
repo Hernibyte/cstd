@@ -30,10 +30,10 @@ target_sources(cstd
         FILE_SET HEADERS
         BASE_DIRS ./include
         FILES
-            include/ref.h
-            include/owner_ref.h
-            include/unique_ref.h
-            include/array.h
+            include/cstd/ref.h
+            include/cstd/owner_ref.h
+            include/cstd/unique_ref.h
+            include/cstd/array.h
     PRIVATE
         src/ref.cpp
 )
