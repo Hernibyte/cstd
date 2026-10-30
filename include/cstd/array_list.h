@@ -1,23 +1,36 @@
 ﻿// hzxynox
+
+/**
+ * @headerfile array_list.h
+ */
+
 #pragma once
 
 #include <cassert>
 #include <cstd/unique_ref.h>
 #include <cstd/utility.h>
-#include <new>
 
 namespace cstd
 {
-    
-    template<typename Type>
+    /**
+     * 
+     * @tparam T 
+     */
+    template<typename T>
     class array_list
     {
     public:
+        using value_type = T;
+        using pointer = T*;
+        using const_pointer = const T*;
+        using reference = T&;
+        using const_reference = const T&;
+        
         array_list() = default;
         
         template<typename... Args>
         explicit array_list(Args&&... args) :
-            m_values(new Type[sizeof...(Args)]{ forward<Args>(args)... }),
+            m_values(new value_type[sizeof...(Args)]{ forward<Args>(args)... }),
             m_size(sizeof...(Args)),
             m_capacity(sizeof...(Args))
         {
@@ -25,7 +38,7 @@ namespace cstd
         
         // Copia
         array_list(const array_list& other) :
-            m_values(new Type[other.m_size]),
+            m_values(new value_type[other.m_size]),
             m_size(other.m_size),
             m_capacity(other.m_capacity)
         {
@@ -52,7 +65,7 @@ namespace cstd
         {
             if (new_capacity <= m_capacity) return;
             
-            Type* new_values = new Type[new_capacity];
+            pointer new_values = new value_type[new_capacity];
             
             for (size_t i = 0; i < m_size; i++)
             {
@@ -64,7 +77,7 @@ namespace cstd
             m_capacity = new_capacity;
         }
         
-        void resize(const size_t new_size, const Type& new_value = Type{}) 
+        void resize(const size_t new_size, const_reference new_value = value_type{}) 
         {
             if (new_size > m_capacity)
             {
@@ -84,19 +97,47 @@ namespace cstd
             m_size = new_size;
         }
         
-        size_t      size()      const noexcept { return m_size; }
-        size_t      capacity()  const noexcept { return m_size; }
-        const Type* begin()     const noexcept { return m_values; }
-        const Type* end()       const noexcept { return m_values + m_size; }
-        Type*       begin()           noexcept { return m_values; }
-        Type*       end()             noexcept { return m_values + m_size; }
+        reference get_first()
+        {
+            return m_values[0];
+        }
+        
+        reference get_last()
+        {
+            return m_values[m_size - 1];
+        }
+        
+        [[nodiscard]] 
+        reference at(size_t index) noexcept
+        {
+            return m_values[index];
+        }
+        
+        size_t        size()      const noexcept { return m_size; }
+        size_t        capacity()  const noexcept { return m_size; }
+        const_pointer begin()     const noexcept { return m_values; }
+        const_pointer end()       const noexcept { return m_values + m_size; }
+        pointer       begin()           noexcept { return m_values; }
+        pointer       end()             noexcept { return m_values + m_size; }
+        
+        // copy
+        void set(size_t index, const_reference element) noexcept
+        {
+            m_values[index] = element;
+        }
+        
+        // move
+        void set(size_t index, value_type&& element) noexcept
+        {
+            m_values[index] = move(element);
+        }
         
         // copy
         array_list& operator=(const array_list& other) noexcept
         {
             if (this != &other)
             {
-                Type* new_values = new Type[other.m_size];
+                pointer new_values = new value_type[other.m_size];
                 for (size_t i = 0; i < other.m_size; i++)
                 {
                     new_values[i] = other.m_values[i];
@@ -122,22 +163,22 @@ namespace cstd
             return *this;
         }
         
-        Type& operator[](size_t index)
+        reference operator[](size_t index)
         {
             assert(index <= m_size);
             return m_values[index];
         }
         
-        const Type& operator[](size_t index) const
+        const_reference operator[](size_t index) const
         {
             assert(index <= m_size);
             return m_values[index];
         }
         
     private:
-        Type*  m_values   = nullptr;
-        size_t m_size     = 0;
-        size_t m_capacity = 0;
+        pointer  m_values   = nullptr;
+        size_t   m_size     = 0;
+        size_t   m_capacity = 0;
         
     };
     

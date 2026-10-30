@@ -23,6 +23,11 @@ class Example
         std::cout << m_variable << "\n";
     }
     
+    bool operator==(const Example& other) const 
+    {
+        return m_variable == other.m_variable;
+    }
+    
 private:
     int m_variable;
     
